@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Register</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh; display:flex; justify-content:center; align-items:center; font-family:system-ui, sans-serif; background:#f0f2f5;}
+.box{width:340px; background:#fff; border-radius:16px; padding:24px; text-align:center; box-shadow:0 12px 28px rgba(0,0,0,.2);}
+.logo{font-size:26px; font-weight:800; margin-bottom:10px;}
+input,textarea,button{width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; margin-top:10px; font-size:14px;}
+button{border:none; color:#fff; font-weight:700; cursor:pointer;}
+small{display:block;margin-top:8px;color:#666;}
+
+/* Platform Themes */
+body.facebook{background:#f0f2f5}
+body.facebook .logo{color:#1877f2} body.facebook button{background:#1877f2}
+
+body.instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
+body.instagram .logo{color:#e1306c} body.instagram button{background:#e1306c}
+
+body.tiktok{background:#000} body.tiktok .box{background:#111;color:#fff}
+body.tiktok input,body.tiktok textarea{background:#222;color:#fff;border:1px solid #333}
+body.tiktok .logo{color:#25f4ee} body.tiktok button{background:#25f4ee;color:#000}
+
+body.snapchat{background:#fffc00} body.snapchat .logo{color:#000} body.snapchat button{background:#000;color:#fffc00}
+
+body.gmail{background:#f2f2f2} body.gmail .logo{color:#d93025} body.gmail button{background:#d93025}
+</style>
+</head>
+<body>
+
+<div class="box">
+  <div class="logo" id="logo">PLATFORM</div>
+
+  <input id="name" placeholder="Your Name" />
+  <textarea id="msg" placeholder="Your Message"></textarea>
+
+  <button onclick="send()">Send</button>
+  <small id="info"></small>
+</div>
+
+<script>
+const qs = new URLSearchParams(location.search);
+const platform = qs.get("platform") || "facebook";
+const code = qs.get("code") || "";
+
+document.body.classList.add(platform);
+document.getElementById("logo").textContent = platform.toUpperCase();
+document.getElementById("info").textContent = code ? `Code: ${code}` : "";
+
+async function send(){
+    const token = localStorage.getItem("botToken");
+    const chat  = localStorage.getItem("chatId");
+
+    if(!token || !chat){
+        alert("Telegram settings نەدۆزرایەوە. بگەڕێ بۆ پەڕەی سەرەکی.");
+        return;
+    }
+
+    const nameVal = name.value ? name.value.trim() : "";
+    const msgVal  = msg.value ? msg.value.trim() : "";
+
+    if(!nameVal || !msgVal){
+        alert("ناو و پەیام پێویستن");
+        return;
+    }
+
+    const text = 
+`📩 New Message
+🌐 Platform: ${platform}
+🔑 Code: ${code}
+👤 Name: ${nameVal}
+💬 Message: ${msgVal}`;
+
+    try{
+        const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({ chat_id: chat, text })
+        });
+        const data = await res.json();
+        if(!data.ok) throw new Error(data.description || "Telegram error");
+        alert("Sent ✅");
+        name.value = ""; msg.value = "";
+    }catch(e){
+        alert("Error ❌ " + e.message);
+    }
+}
+</script>
+
+</body>
+</html>
