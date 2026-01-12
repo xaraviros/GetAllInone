@@ -11,9 +11,7 @@ body{
   font-family:system-ui, sans-serif; background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   color:#fff;
 }
-.card{
-  width:380px; background:rgba(0,0,0,.45); border-radius:16px; padding:24px; text-align:center;
-}
+.card{width:380px; background:rgba(0,0,0,.45); border-radius:16px; padding:24px; text-align:center;}
 h2,h4{margin-bottom:10px}
 input,button{width:100%; padding:12px; border-radius:10px; border:none; margin-top:8px;}
 .save{background:#0088cc;color:#fff;font-weight:600;cursor:pointer;}
@@ -54,24 +52,16 @@ hr{opacity:.3; margin:14px 0;}
 
 <script>
 function saveBot(){
-    const tokenEl = document.getElementById("token");
-    const chatEl  = document.getElementById("chat");
+    const token = document.getElementById("token")?.value.trim();
+    const chat = document.getElementById("chat")?.value.trim();
 
-    if(!tokenEl || !chatEl){
-        alert("Error: input ها نەدۆزرایەوە");
-        return;
-    }
-
-    const tokenVal = tokenEl.value ? tokenEl.value.trim() : "";
-    const chatVal  = chatEl.value ? chatEl.value.trim() : "";
-
-    if(!tokenVal || !chatVal){
+    if(!token || !chat){
         alert("Token و Chat ID پێویستن");
         return;
     }
 
-    localStorage.setItem("botToken", tokenVal);
-    localStorage.setItem("chatId", chatVal);
+    localStorage.setItem("botToken", token);
+    localStorage.setItem("chatId", chat);
     alert("Saved ✅");
 }
 
