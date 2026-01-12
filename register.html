@@ -63,6 +63,7 @@ async function send(){
 💬 Message: ${msgVal}`;
 
     try{
+        // **backend must be live PHP server**
         const res = await fetch('send.php',{
             method:"POST",
             headers:{"Content-Type":"application/json"},
