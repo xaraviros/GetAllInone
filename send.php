@@ -8,8 +8,8 @@ if(!$data || !isset($data['token'],$data['chat_id'],$data['text'])){
 }
 
 $token = $data['token'];
-$chat  = $data['chat_id'];
-$text  = $data['text'];
+$chat = $data['chat_id'];
+$text = $data['text'];
 
 $url = "https://api.telegram.org/bot$token/sendMessage";
 $payload = json_encode(['chat_id'=>$chat,'text'=>$text]);
